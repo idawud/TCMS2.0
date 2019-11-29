@@ -3,8 +3,6 @@ package io.turntabl;
 import io.turntabl.menu.AnsiConsole;
 import io.turntabl.menu.AppMenu;
 
-import java.sql.SQLException;
-
 public class TCMS {
 
     public static void main(String[] args) throws InterruptedException {
@@ -16,5 +14,9 @@ public class TCMS {
                 + "*****************************************************************************" + AnsiConsole.RESET);
 
         appMenu.run();
+
     }
+
+
+
 }

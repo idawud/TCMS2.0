@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,7 +17,13 @@ import java.util.stream.Stream;
 public class DataAccess {
     private ClientDAO clientDAO;
 
-    public void showAllClientsRecords() throws SQLException {
+    public void showAllClientsRecords() {
+        Optional<List<Client>> clients = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer");
+        if ( clients.isPresent()){
+            printRecords(clients.get());
+        }else {
+            System.out.println(AnsiConsole.RED + "NO Records yet!" + AnsiConsole.RESET);
+        }
     }
 
     private static void printRecords(List<Client> records) {

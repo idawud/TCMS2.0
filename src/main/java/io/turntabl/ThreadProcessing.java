@@ -18,9 +18,7 @@ public class ThreadProcessing {
                 break;
             case 2:
                 Thread clientsDisplay = new Thread(()-> {
-                    try {
-                        dataAccess.showAllClientsRecords();
-                    } catch (SQLException ignored) { }
+                    dataAccess.showAllClientsRecords();
                 });
                 clientsDisplay.start();
                 clientsDisplay.join();
