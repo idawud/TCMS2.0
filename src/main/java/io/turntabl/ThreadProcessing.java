@@ -11,11 +11,7 @@ public class ThreadProcessing {
         switch (option){
             case 1:
                 Thread entry = new Thread(()-> {
-                    try {
-                        dataAccess.entry();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException ignored) {  }
+                    dataAccess.entry();
                 });
                 entry.start();
                 entry.join();

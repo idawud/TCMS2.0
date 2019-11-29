@@ -92,4 +92,6 @@ public class DataAccess {
         return id;
     }
 
+    public void entry() {
+    }
 }
