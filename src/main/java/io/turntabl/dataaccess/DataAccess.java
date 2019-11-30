@@ -72,7 +72,7 @@ public class DataAccess {
     }
 
 
-    public void recoverDeleteClientRecord() {
+    public void recoverDeleteClientRecord() throws Exception {
         String name = DataEntry.getStringInput("Enter Client's Name: ");
 
         Optional<List<Client>> clients = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer/search/r/?name=" + name);
@@ -83,7 +83,7 @@ public class DataAccess {
 
             int id = getId("\nEnter the ID to be recovered: ");
             if (validIds.contains(id)) {
-                Optional<List<Client>> deletedClient = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer/retrieve/" + id);
+                Optional<Client> deletedClient = RestAPIConsume.recover("https://mysterious-peak-14776.herokuapp.com/customer/retrieve/" + id);
                 if ( deletedClient.isPresent()){
                     System.out.println(AnsiConsole.GREEN + "\nClient Record with id=" + id + " recovered Successfully!" + AnsiConsole.RESET);
                 }

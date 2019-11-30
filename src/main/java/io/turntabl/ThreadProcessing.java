@@ -50,7 +50,11 @@ public class ThreadProcessing {
                 break;
             case 5:
                 Thread recover = new Thread(()-> {
-                    dataAccess.recoverDeleteClientRecord();
+                    try {
+                        dataAccess.recoverDeleteClientRecord();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 });
                 recover.start();
                 recover.join();
