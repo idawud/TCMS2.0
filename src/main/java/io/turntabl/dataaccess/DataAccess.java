@@ -111,12 +111,11 @@ public class DataAccess {
     public void entry() throws Exception {
         Client client = DataEntry.getClientInformation();
         String toJsonString = RestAPIConsume.clientObjectToJsonString(client);
-        // System.out.println(toJsonString);
         boolean post = RestAPIConsume.post("https://mysterious-peak-14776.herokuapp.com/customer/", toJsonString);
         if (post){
-            System.out.println("Post successful");
+            System.out.println(AnsiConsole.GREEN + "New Client '" + client.getName() + "', added Successfully!" + AnsiConsole.RESET);
         }else {
-            oops(999);
+            System.out.println(AnsiConsole.RED + "Oops! something went wrong adding new client '" + client.getName() + "', try again later!" + AnsiConsole.RESET);
         }
     }
 

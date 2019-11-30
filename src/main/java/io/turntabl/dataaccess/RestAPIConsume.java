@@ -58,12 +58,10 @@ public class RestAPIConsume {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
                 .header("Content-Type", "application/json")
-                //.POST(BodyPublisher.fromString(data))
                 .POST(HttpRequest.BodyPublishers.ofString(data))
                 .build();
 
         var response = client.send(request, HttpResponse.BodyHandlers.ofString(Charset.defaultCharset()));
-        System.out.println(response.statusCode());
         return (response.statusCode() == 200);
     }
 
