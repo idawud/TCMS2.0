@@ -65,6 +65,23 @@ public class RestAPIConsume {
         return (response.statusCode() == 200);
     }
 
+    public static Optional<List<Client>> delete(String uri) throws Exception {
+        HttpClient client = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(uri))
+                //.header("Content-Type", "application/json")
+                .DELETE()
+                .build();
+        try {
+            var response = client.send(request, HttpResponse.BodyHandlers.ofString(Charset.defaultCharset()));
+            var jsonData = jsonStringToClientObject(response.body());
+            return Optional.of(jsonData);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
     public static String clientObjectToJsonString(Client client) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(client);

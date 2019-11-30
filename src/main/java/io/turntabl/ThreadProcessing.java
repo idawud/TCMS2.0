@@ -41,7 +41,9 @@ public class ThreadProcessing {
                 Thread delete = new Thread(()-> {
                     try {
                         dataAccess.deleteClientRecord();
-                    } catch (SQLException ignored) { }
+                    } catch (SQLException ignored) { } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 });
                 delete.start();
                 delete.join();
