@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.turntabl.dataentry.DataEntry;
 import io.turntabl.menu.AnsiConsole;
 import io.turntabl.menu.Printer;
-import io.turntabl.persistance.DBConnection;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DataAccess {
-    private ClientDAO clientDAO;
 
     public void showAllClientsRecords() {
         Optional<List<Client>> clients = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer");
