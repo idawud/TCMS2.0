@@ -1,5 +1,6 @@
 package io.turntabl.dataaccess;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,11 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class RestAPIConsume {
@@ -34,7 +31,7 @@ public class RestAPIConsume {
 
         try {
             var response = client.send(req, HttpResponse.BodyHandlers.ofString(Charset.defaultCharset()));
-            var jsonData = getClientsFromJson(response.body());
+            var jsonData = jsonStringToClientObject(response.body());
             return Optional.of(jsonData);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -42,7 +39,7 @@ public class RestAPIConsume {
         return Optional.empty();
     }
 
-    private static List<Client> getClientsFromJson(String json) {
+    private static List<Client> jsonStringToClientObject(String json) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             TypeFactory typeFactory = objectMapper.getTypeFactory();
@@ -53,5 +50,10 @@ public class RestAPIConsume {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String clientObjectToJsonString(Client client) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(client);
     }
 }

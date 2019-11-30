@@ -1,5 +1,6 @@
 package io.turntabl.dataaccess;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.turntabl.dataentry.DataEntry;
 import io.turntabl.menu.AnsiConsole;
 import io.turntabl.menu.Printer;
@@ -107,7 +108,10 @@ public class DataAccess {
         return id;
     }
 
-    public void entry() {
+    public void entry() throws JsonProcessingException {
+        Client client = DataEntry.getClientInformation();
+        String toJsonString = RestAPIConsume.clientObjectToJsonString(client);
+        System.out.println(toJsonString);
     }
 
     private void oops(int id) {

@@ -1,5 +1,6 @@
 package io.turntabl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.turntabl.dataaccess.DataAccess;
 import io.turntabl.menu.AnsiConsole;
 import java.sql.SQLException;
@@ -11,7 +12,11 @@ public class ThreadProcessing {
         switch (option){
             case 1:
                 Thread entry = new Thread(()-> {
-                    dataAccess.entry();
+                    try {
+                        dataAccess.entry();
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
                 });
                 entry.start();
                 entry.join();
