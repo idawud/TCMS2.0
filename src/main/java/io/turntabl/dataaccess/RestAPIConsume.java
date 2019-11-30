@@ -1,6 +1,7 @@
 package io.turntabl.dataaccess;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +13,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class RestAPIConsume {
@@ -52,6 +55,24 @@ public class RestAPIConsume {
         return null;
     }
 
+    public static Client parseJsonToMap(String json) {
+        var mapper = new ObjectMapper();
+        var typeRef = new TypeReference<HashMap<String,Object>>() {};
+
+        try {
+            Map<String, Object> mJson = mapper.readValue(json, typeRef);
+            Client client = new Client();
+            client.setName((String) mJson.get("name"));
+            client.setAddress((String) mJson.get("address"));
+            client.setTelephoneNumber((String) mJson.get("telephoneNumber"));
+            client.setEmail((String) mJson.get("email"));
+            return client;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public static boolean post(String uri, String data) throws Exception {
         HttpClient client = HttpClient.newBuilder().build();
@@ -65,7 +86,7 @@ public class RestAPIConsume {
         return (response.statusCode() == 200);
     }
 
-    public static Optional<List<Client>> delete(String uri) throws Exception {
+    public static Optional<Client> delete(String uri) throws Exception {
         HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
@@ -74,7 +95,7 @@ public class RestAPIConsume {
                 .build();
         try {
             var response = client.send(request, HttpResponse.BodyHandlers.ofString(Charset.defaultCharset()));
-            var jsonData = jsonStringToClientObject(response.body());
+            var jsonData = parseJsonToMap(response.body());
             return Optional.of(jsonData);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

@@ -56,7 +56,7 @@ public class DataAccess {
 
             int id = getId("\nEnter the ID to be deleted: ");
             if (validIds.contains(id)) {
-                Optional<List<Client>> deletedClient = RestAPIConsume.delete("https://mysterious-peak-14776.herokuapp.com/customer/" + id);
+                Optional<Client> deletedClient = RestAPIConsume.delete("https://mysterious-peak-14776.herokuapp.com/customer/" + id);
                 if ( deletedClient.isPresent()){
                     System.out.println(AnsiConsole.GREEN + "\nClient Record with id=" + id + " deleted Successfully!" + AnsiConsole.RESET);
                 }
