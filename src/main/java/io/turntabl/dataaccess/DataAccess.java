@@ -36,22 +36,26 @@ public class DataAccess {
 
     public void showSearchedClientsRecords() throws SQLException {
         String name = DataEntry.getStringInput("Enter Client's name: ");
-        List<Client> records = clientDAO.getAllSearchedClients(name);
-        printRecords(records);
+        Optional<List<Client>> clients = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer/search?name=" + name);
+        if ( clients.isPresent()){
+            printRecords(clients.get());
+        }else {
+            System.out.println(AnsiConsole.RED + "NO Records yet name " + name + " !!"  + AnsiConsole.RESET);
+        }
     }
 
     public void deleteClientRecord() throws SQLException {
         String name = DataEntry.getStringInput("Enter Client's Name: ");
 
-        List<Client> records = clientDAO.getAllSearchedClients(name);
-        if (records.size() == 0) {
-            Printer.recordNotFound();
-        } else {
+        Optional<List<Client>> clients = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer/search?name=" + name);
+        if (clients.isPresent()){
+            List<Client> records = clients.get();
             records.forEach(Printer::printClientCardWithId);
             List<Integer> validIds = records.stream().map(Client::getId).collect(Collectors.toList());
 
             int id = getId("\nEnter the ID to be deleted: ");
             if (validIds.contains(id)) {
+                Optional<List<Client>> deletedClient = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer/" + id);
                 boolean status = clientDAO.deleteClient(id);
                 if (status) {
                     System.out.println(AnsiConsole.GREEN + "\nClient Record Deleted Successfully!" + AnsiConsole.RESET);
@@ -60,7 +64,12 @@ public class DataAccess {
                 System.out.println(AnsiConsole.RED + "Oops! Client with id " + id +
                         " does not exist " + AnsiConsole.RESET);
             }
+
         }
+        else {
+            Printer.recordNotFound();
+        }
+
     }
 
 
