@@ -1,14 +1,7 @@
 package io.turntabl.dataentry;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.turntabl.dataaccess.Client;
-import io.turntabl.dataaccess.DBType;
-import io.turntabl.persistance.DBConnection;
 
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class DataEntry {
