@@ -49,7 +49,7 @@ public class DataAccess {
         String name = DataEntry.getStringInput("Enter Client's Name: ");
 
         Optional<List<Client>> clients = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer/search?name=" + name);
-        if (clients.isPresent()){
+        if (clients.isPresent() && clients.get().size() != 0){
             List<Client> records = clients.get();
             records.forEach(Printer::printClientCardWithId);
             List<Integer> validIds = records.stream().map(Client::getId).collect(Collectors.toList());
@@ -76,7 +76,7 @@ public class DataAccess {
         String name = DataEntry.getStringInput("Enter Client's Name: ");
 
         Optional<List<Client>> clients = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer/search/r/?name=" + name);
-        if (clients.isPresent()){
+        if (clients.isPresent() && clients.get().size() != 0){
             List<Client> records = clients.get();
             records.forEach(Printer::printClientCardWithId);
             List<Integer> validIds = records.stream().map(Client::getId).collect(Collectors.toList());
