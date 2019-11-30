@@ -75,7 +75,7 @@ public class DataAccess {
     public void recoverDeleteClientRecord() throws SQLException {
         String name = DataEntry.getStringInput("Enter Client's Name: ");
 
-        Optional<List<Client>> clients = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer/search?name=" + name);
+        Optional<List<Client>> clients = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer/search/r/?name=" + name);
         if (clients.isPresent()){
             List<Client> records = clients.get();
             records.forEach(Printer::printClientCardWithId);
