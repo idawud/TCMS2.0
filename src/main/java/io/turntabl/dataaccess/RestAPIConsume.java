@@ -11,7 +11,6 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.net.http.BodyPublisher;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +58,8 @@ public class RestAPIConsume {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
                 .header("Accept", "application/json")
-                .POST(BodyPublisher.fromString(data))
+                //.POST(BodyPublisher.fromString(data))
+                .POST(HttpRequest.BodyPublishers.ofString(data))
                 .build();
 
         var response = client.send(request, HttpResponse.BodyHandlers.ofString(Charset.defaultCharset()));
