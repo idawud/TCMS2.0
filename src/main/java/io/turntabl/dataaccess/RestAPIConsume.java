@@ -52,6 +52,19 @@ public class RestAPIConsume {
         return null;
     }
 
+
+    public static boolean post(String uri, String data) throws Exception {
+        HttpClient client = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(uri))
+                .header("Accept", "application/json")
+                .POST(BodyPublisher.fromString(data))
+                .build();
+
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString(Charset.defaultCharset()));
+        return (response.statusCode() == 200);
+    }
+
     public static String clientObjectToJsonString(Client client) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(client);

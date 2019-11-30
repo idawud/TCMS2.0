@@ -108,10 +108,16 @@ public class DataAccess {
         return id;
     }
 
-    public void entry() throws JsonProcessingException {
+    public void entry() throws Exception {
         Client client = DataEntry.getClientInformation();
         String toJsonString = RestAPIConsume.clientObjectToJsonString(client);
-        System.out.println(toJsonString);
+        // System.out.println(toJsonString);
+        boolean post = RestAPIConsume.post("https://mysterious-peak-14776.herokuapp.com/customer/", toJsonString);
+        if (post){
+            System.out.println("Post successful");
+        }else {
+            oops(999);
+        }
     }
 
     private void oops(int id) {

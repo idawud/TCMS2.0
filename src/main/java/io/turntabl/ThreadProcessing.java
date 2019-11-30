@@ -14,7 +14,7 @@ public class ThreadProcessing {
                 Thread entry = new Thread(()-> {
                     try {
                         dataAccess.entry();
-                    } catch (JsonProcessingException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
