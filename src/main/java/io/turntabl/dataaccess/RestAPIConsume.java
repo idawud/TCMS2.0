@@ -55,7 +55,7 @@ public class RestAPIConsume {
         return null;
     }
 
-    public static Client parseJsonToMap(String json) {
+    public static Client parseJsonToClientObj(String json) {
         var mapper = new ObjectMapper();
         var typeRef = new TypeReference<HashMap<String,Object>>() {};
 
@@ -95,7 +95,22 @@ public class RestAPIConsume {
                 .build();
         try {
             var response = client.send(request, HttpResponse.BodyHandlers.ofString(Charset.defaultCharset()));
-            var jsonData = parseJsonToMap(response.body());
+            var jsonData = parseJsonToClientObj(response.body());
+            return Optional.of(jsonData);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<Client> recover(String uri) throws Exception {
+        HttpClient client = HttpClient.newBuilder().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(uri))
+                .build();
+        try {
+            var response = client.send(request, HttpResponse.BodyHandlers.ofString(Charset.defaultCharset()));
+            var jsonData = parseJsonToClientObj(response.body());
             return Optional.of(jsonData);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
