@@ -72,7 +72,7 @@ public class DataAccess {
     }
 
 
-    public void recoverDeleteClientRecord() throws SQLException {
+    public void recoverDeleteClientRecord() {
         String name = DataEntry.getStringInput("Enter Client's Name: ");
 
         Optional<List<Client>> clients = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer/search/r/?name=" + name);
