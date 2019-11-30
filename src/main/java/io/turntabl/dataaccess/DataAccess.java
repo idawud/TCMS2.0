@@ -56,14 +56,12 @@ public class DataAccess {
             int id = getId("\nEnter the ID to be deleted: ");
             if (validIds.contains(id)) {
                 Optional<List<Client>> deletedClient = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer/" + id);
-                boolean status = clientDAO.deleteClient(id);
-                if (status) {
-                    System.out.println(AnsiConsole.GREEN + "\nClient Record Deleted Successfully!" + AnsiConsole.RESET);
+                if ( deletedClient.isPresent()){
+                    System.out.println(AnsiConsole.GREEN + "\nClient Record with id=" + id + " deleted Successfully!" + AnsiConsole.RESET);
                 }
-            } else {
-                System.out.println(AnsiConsole.RED + "Oops! Client with id " + id +
-                        " does not exist " + AnsiConsole.RESET);
+                else  { oops(id); }
             }
+            else { oops(id); }
 
         }
         else {
@@ -76,24 +74,25 @@ public class DataAccess {
     public void recoverDeleteClientRecord() throws SQLException {
         String name = DataEntry.getStringInput("Enter Client's Name: ");
 
-        List<Client> records = clientDAO.getAllSearchedArchivedClients(name);
-        if (records.size() == 0) {
-            Printer.recordNotFound();
-        } else {
+        Optional<List<Client>> clients = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer/search?name=" + name);
+        if (clients.isPresent()){
+            List<Client> records = clients.get();
             records.forEach(Printer::printClientCardWithId);
             List<Integer> validIds = records.stream().map(Client::getId).collect(Collectors.toList());
 
             int id = getId("\nEnter the ID to be recovered: ");
             if (validIds.contains(id)) {
-                boolean status = clientDAO.recoverClient(id);
-                if (status) {
-                    System.out.println(AnsiConsole.GREEN +
-                            "\\nClient Record Recovered Successfully!" + AnsiConsole.RESET);
+                Optional<List<Client>> deletedClient = RestAPIConsume.getClients("https://mysterious-peak-14776.herokuapp.com/customer/retrieve/" + id);
+                if ( deletedClient.isPresent()){
+                    System.out.println(AnsiConsole.GREEN + "\nClient Record with id=" + id + " recovered Successfully!" + AnsiConsole.RESET);
                 }
-            } else {
-                System.out.println(AnsiConsole.RED + "Oops! Client with id " + id +
-                        " does not exist " + AnsiConsole.RESET);
+                else  { oops(id); }
             }
+            else { oops(id); }
+
+        }
+        else {
+            Printer.recordNotFound();
         }
     }
 
@@ -109,5 +108,10 @@ public class DataAccess {
     }
 
     public void entry() {
+    }
+
+    private void oops(int id) {
+        System.out.println(AnsiConsole.RED + "Oops! Client with id " + id +
+                " does not exist " + AnsiConsole.RESET);
     }
 }
